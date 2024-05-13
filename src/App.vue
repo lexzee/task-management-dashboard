@@ -11,7 +11,7 @@
     </div>
   </div>
   <div v-if="showAddTask">
-    <AddTask @close="toggleShowAddTask" @add-task="addNewTask(task)"/>
+    <AddTask @close="toggleShowAddTask" @add-task="addNewTask"/>
   </div>
   <div class="tasks">
     <h2>
@@ -98,7 +98,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 import Task from './types/Task'
 import AddTask from './components/AddTask.vue'
 
@@ -108,7 +108,6 @@ export default defineComponent({
     AddTask
   },
   data() {
-    // const state = reactive({
     return {
       title: 'Teachmate',
       showAllTasks: true as boolean,
@@ -160,14 +159,7 @@ export default defineComponent({
         },
         // Add more tasks here...
       ]
-    // });
 
-    // return {
-    //   title: state.title,
-    //   tasks: state.tasks,
-    //   showAllTasks: state.showAllTasks,
-    //   showCompletedTasks: state.showCompletedTasks,
-    //   showPendingTasks: state.showPendingTasks
     };
   },
   methods: {
@@ -201,9 +193,7 @@ export default defineComponent({
       }
     },
     addNewTask(task: Task) {
-      // this.tasks.push(task);
-      console.log(task);
-      
+      this.tasks.push(task);
     }
   },
   computed: {
