@@ -122,41 +122,6 @@ export default defineComponent({
           dueDate: "2022-01-01",
           status: "pending"
         },
-        {
-          id: 2,
-          title: "Task 2",
-          description: "Description for Task 2",
-          dueDate: "2022-01-02",
-          status: "completed"
-        },
-        {
-          id: 3,
-          title: "Task 1",
-          description: "Description for Task 1",
-          dueDate: "2022-01-01",
-          status: "pending"
-        },
-        {
-          id: 4,
-          title: "Task 2",
-          description: "Description for Task 2",
-          dueDate: "2022-01-02",
-          status: "completed"
-        },
-        {
-          id: 5,
-          title: "Task 1",
-          description: "Description for Task 1",
-          dueDate: "2022-01-01",
-          status: "pending"
-        },
-        {
-          id: 6,
-          title: "Task 2",
-          description: "Description for Task 2",
-          dueDate: "2022-01-02",
-          status: "completed"
-        },
         // Add more tasks here...
       ]
 
