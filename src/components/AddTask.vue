@@ -11,10 +11,6 @@
       <button type="button" @click="addTask">Add Task</button>
       <button type="button" @click="closeForm">Cancel</button>
     </form>
-
-    <p>Title: {{ title }}</p>
-    <p>Description: {{ description }}</p>
-    <p>Due: {{ dueDate }}</p>
   </div>
 </template>
 
