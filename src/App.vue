@@ -11,7 +11,7 @@
     </div>
   </div>
   <div v-if="showAddTask">
-    <AddTask @close="toggleShowAddTask" @add-task="addNewTask"/>
+    <Form heading='Add Task' @close="toggleShowAddTask" @add-task="addNewTask"/>
   </div>
   <div class="tasks">
     <h2>
@@ -100,12 +100,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Task from './types/Task'
-import AddTask from './components/AddTask.vue'
+import Form from './components/Form.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    AddTask
+    Form
   },
   data() {
     return {
@@ -158,7 +158,11 @@ export default defineComponent({
       }
     },
     addNewTask(task: Task) {
-      this.tasks.push(task);
+      this.tasks.push({
+        ...task,
+        id: Date.now(),
+        status: 'pending'
+      });
     }
   },
   computed: {
@@ -192,15 +196,6 @@ export default defineComponent({
     font-weight: 400;
     align-items: center;
   }
-
-  /* button {
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  } */
 
   .tasks {
     padding: 20px;
