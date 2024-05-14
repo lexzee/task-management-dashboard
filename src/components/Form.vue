@@ -1,51 +1,41 @@
 <template>
   <div class="backdrop">
     <form @submit="preventDefault">
-      <h2>Add Task</h2>
+      <h2>{{ heading }}</h2>
       <label for="title">Title</label>
       <input type="text" ref="title" name="title" v-model="title">
+      <p v-if="emptyTitle" class="error">title can not be blank</p>
       <label for="description">Description</label>
       <textarea ref="description" name="description" v-model="description"></textarea>
+      <p v-if="emptyDescription" class="error">description can not be blank</p>
       <label for="dueDate">Due Date</label>
       <input type="date" ref="dueDate" name="dueDate" v-model="dueDate">
-      <button type="button" @click="addTask">Add Task</button>
+      <p v-if="emptyDueDate" class="error">due date can not be blank</p>
+      <button type="button" @click="addTask">{{ heading }}</button>
       <button type="button" @click="closeForm">Cancel</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  // setup() {
-    // const title = ref('')
-    // const description = ref('')
-    // const dueDate = ref('')
-
-    // const preventDefault = (event: Event) => {
-    //   event.preventDefault()
-    // }
-
-    // const closeModal = () => {
-    //   title.value = ''
-    //   description.value = ''
-    //   dueDate.value = ''
-    // }
-
-    // return {
-    //   title,
-    //   description,
-    //   dueDate,
-    //   preventDefault,
-    //   closeModal,
-    // }
-  // },
+  name: 'CustomForm',
+  props: {
+    heading: {
+      type: String,
+      required: true
+    }
+  },
   data(){
     return{
       title:'',
       description:'',
-      dueDate:''
+      dueDate:'',
+      emptyTitle: false,
+      emptyDescription: false,
+      emptyDueDate: false
     }
   },
   methods:{
@@ -56,12 +46,16 @@ export default defineComponent({
       this.$emit('close')
     },
     addTask(){
+      if(!this.title || !this.description || !this.dueDate){
+        !this.title ? this.emptyTitle = true : this.emptyTitle = false
+        !this.description ? this.emptyDescription = true : this.emptyDescription = false
+        !this.dueDate ? this.emptyDueDate = true : this.emptyDueDate = false
+        return
+      }
       const task = {
-        id: Date.now(),
         title: this.title,
         description: this.description,
         dueDate: this.dueDate,
-        status: 'pending'
       }
       this.$emit('add-task', task)
       this.closeForm()
@@ -103,5 +97,12 @@ export default defineComponent({
   label{
     /* margin-bottom: 5px; */
     font-size: 14px;
+  }
+  .error {
+    /* display: none; */
+    margin-top: -10px;
+    color: red;
+    font-style: italic;
+    font-size: 11px;
   }
 </style>
