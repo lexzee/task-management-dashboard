@@ -2,23 +2,40 @@
   <div class="backdrop">
     <form @submit="preventDefault">
       <h2>{{ heading }}</h2>
+
+      <!-- Add the v-model directives to the input fields -->
+      <!-- Enter Title -->
       <label for="title">Title</label>
       <input type="text" ref="title" name="title" v-model="title">
       <p v-if="emptyTitle" class="error">title can not be blank</p>
+
+      <!-- Enter Description -->
       <label for="description">Description</label>
       <textarea ref="description" name="description" v-model="description"></textarea>
       <p v-if="emptyDescription" class="error">description can not be blank</p>
+
+      <!-- Enter Due Date -->
       <label for="dueDate">Due Date</label>
       <input type="date" ref="dueDate" name="dueDate" v-model="dueDate">
       <p v-if="emptyDueDate" class="error">due date can not be blank</p>
-      <button type="button" @click="addTask">{{ heading }}</button>
+
+      <!-- Add the submitForm method to the form's submit event -->
+      <!-- <button type="button" @click="addTask">{{ heading }}</button> -->
+      <button type="button" @click="submitForm">{{ heading }}</button>
       <button type="button" @click="closeForm">Cancel</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+
+// Add the Task interface
+interface Task {
+  title: string
+  description: string
+  dueDate: string
+}
 
 export default defineComponent({
   name: 'CustomForm',
@@ -26,6 +43,22 @@ export default defineComponent({
     heading: {
       type: String,
       required: true
+    },
+
+    // Add the prop for the task
+    mode: {
+      type: String as PropType<'add' | 'edit'>,
+      required: true
+    },
+    task: {
+      type: Object as PropType<Task>,
+      default: () => {
+        return {
+          title: '',
+          description: '',
+          dueDate: ''
+        }
+      }
     }
   },
   data(){
@@ -45,19 +78,29 @@ export default defineComponent({
     closeForm(){
       this.$emit('close')
     },
-    addTask(){
+
+    // Add the submitForm method
+    submitForm(){
       if(!this.title || !this.description || !this.dueDate){
         !this.title ? this.emptyTitle = true : this.emptyTitle = false
         !this.description ? this.emptyDescription = true : this.emptyDescription = false
         !this.dueDate ? this.emptyDueDate = true : this.emptyDueDate = false
         return
       }
-      const task = {
-        title: this.title,
-        description: this.description,
-        dueDate: this.dueDate,
+      if (this.mode === 'add') {
+        const task = {
+          title: this.title,
+          description: this.description,
+          dueDate: this.dueDate,
+        }
+        this.$emit('add-task', task)
+      } else if (this.mode === 'edit') {
+        this.$emit('edit-task',this.task,  {
+          title: this.title,
+          description: this.description,
+          dueDate: this.dueDate
+        })
       }
-      this.$emit('add-task', task)
       this.closeForm()
     }
   }

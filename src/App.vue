@@ -11,7 +11,13 @@
     </div>
   </div>
   <div v-if="showAddTask">
-    <Form heading='Add Task' @close="toggleShowAddTask" @add-task="addNewTask"/>
+    <Form
+      heading='Add Task'
+      @close="toggleShowAddTask"
+      @add-task="addNewTask"
+      @edit-task="editTask"
+      mode="add"
+    />
   </div>
   <div class="tasks">
     <h2>
@@ -21,10 +27,13 @@
     </h2>
     <ul v-if="showAllTasks">
       <li v-for="task in tasks" :key="task.id" class="task" :class="{ 'completed' : task.status === 'completed'}">
+        <!-- <div v-if="showEditTask">
+          <Form heading='Edit Task' @close="toggleShowEditTask" @add-task="addNewTask"/>
+        </div> -->
         <div class="head">
           <h3>{{ task.title }}</h3>
           <div class="actions">
-            <button>Edit</button>
+            <!-- <button @click="console.log('hello')" v-if="task.status === 'pending'">Edit</button> -->
             <button @click="deleteTask(task)">Delete</button>
             <input
               type="checkbox"
@@ -44,12 +53,13 @@
         </div>
       </li>
     </ul>
+
+    <!-- Completed Tasks -->
     <ul v-if="showCompletedTasks">
       <li v-for="task in completedTasks" :key="task.id" class="task" :class="{ 'completed' : task.status === 'completed'}">
         <div class="head">
           <h3>{{ task.title }}</h3>
           <div class="actions">
-            <button>Edit</button>
             <button @click="deleteTask(task)">Delete</button>
             <input
               type="checkbox"
@@ -69,12 +79,23 @@
         </div>
       </li>
     </ul>
+
+    <!-- Pending Tasks -->
     <ul v-if="showPendingTasks">
       <li v-for="task in pendingTasks" :key="task.id" class="task" :class="{ 'completed' : task.status === 'completed'}">
+        <div v-if="showEditTask">
+          <Form
+            heading='Edit Task'
+            @close="toggleShowEditTask"
+            @edit-task="editTask"
+            mode="edit"
+            :task="task"
+          />
+        </div>
         <div class="head">
           <h3>{{ task.title }}</h3>
           <div class="actions">
-            <button>Edit</button>
+            <button @click="toggleShowEditTask">Edit</button>
             <button @click="deleteTask(task)">Delete</button>
             <input
               type="checkbox"
@@ -114,6 +135,8 @@ export default defineComponent({
       showCompletedTasks: false as boolean,
       showPendingTasks: false as boolean,
       showAddTask: false as boolean,
+      showEditTask: false as boolean,
+      taskToEdit: { id: 0, name: '' },
       tasks: [
         {
           id: 1,
@@ -147,8 +170,31 @@ export default defineComponent({
     deleteTask(task: Task) {
       this.tasks = this.tasks.filter((t) => t.id !== task.id);
     },
+
+    editTask({id, ...updatedTask}: Task, data?: Task) {
+      this.tasks = this.tasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            ...data
+          };
+        }
+        return task;
+      });
+    },
+
+    addNewTask(task: Task) {
+      this.tasks.push({
+        ...task,
+        id: Date.now(),
+        status: 'pending'
+      });
+    },
     toggleShowAddTask() {
       this.showAddTask = !this.showAddTask;
+    },
+    toggleShowEditTask() {
+      this.showEditTask = !this.showEditTask;
     },
     toggleStatus(task : Task) {
       if (task.status === 'completed') {
@@ -157,13 +203,6 @@ export default defineComponent({
         task.status = 'completed';
       }
     },
-    addNewTask(task: Task) {
-      this.tasks.push({
-        ...task,
-        id: Date.now(),
-        status: 'pending'
-      });
-    }
   },
   computed: {
     completedTasks(): Task[] {
