@@ -109,7 +109,7 @@ export default defineComponent({
 
 
 <style scoped>
-  .backdrop {
+  .backdrop{
     position: fixed;
     top: 0;
     left: 0;
@@ -121,31 +121,43 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
   }
+
   form {
-    background-color: white;
-    width: 400px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    background-color: white;
+    width: 75%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     gap: 10px;
   }
-  input, textarea {
+
+  input, textarea{
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 10px;
   }
+
   label{
-    /* margin-bottom: 5px; */
     font-size: 14px;
   }
+
   .error {
-    /* display: none; */
     margin-top: -10px;
     color: red;
     font-style: italic;
     font-size: 11px;
+  }
+
+  @media (width > 768px){
+    form {
+      width: 400px;
+    }
+
+    label{
+      margin-bottom: 5px;
+    }
   }
 </style>
