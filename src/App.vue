@@ -1,14 +1,16 @@
 <template>
   <div class="header">
-    {{ title}}
-    <div class="nav">
-      <ul>
-        <li @click="showAll">All</li>
-        <li @click="showCompleted">Completed</li>
-        <li @click="showPending">Pending</li>
-        <button @click="toggleShowAddTask">Add Task +</button>
-      </ul>
+    <div class="hNav">
+      <h1>{{ title}}</h1>
+      <div class="nav">
+        <ul>
+          <li @click="showAll" :class="{'active' : showAll === true}">All</li>
+          <li @click="showCompleted" :class="{'active' : showCompleted === true}">Completed</li>
+          <li @click="showPending" :class="{'active' : showPending === true}">Pending</li>
+        </ul>
+      </div>
     </div>
+    <button @click="toggleShowAddTask">Add Task +</button>
   </div>
   <div v-if="showAddTask">
     <Form
@@ -226,34 +228,45 @@ export default defineComponent({
 <style scoped>
   .header {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
-    width: 760px;
+    width: 93%;
     color: #333;
-    font-weight: 600;
     margin: 20px auto;
+    font-weight: 600;
+    padding: 0 10px;
   }
 
-  .nav ul {
+  .nav ul{
     display: flex;
-    list-style: none;
     gap: 20px;
-    /* font-weight: 400; */
     align-items: center;
   }
 
-  .tasks {
-    padding: 20px;
-    width: 760px;
-  }
-
-  .task {
+  .hNav{
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    justify-content: flex-start;
+    gap: 20px;
+  }
+
+  .nav{
+    font-size: .8rem;
+  }
+
+  .tasks{
+    padding: 10px;
+    width: 95%;
+    margin: auto;
+  }
+
+  .task{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
     border-radius: 10px;
-    margin-bottom: 20px;
     box-shadow: 1px 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
   }
 
   .head{
@@ -261,8 +274,14 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
   }
-  .head .actions button {
-    padding: 5px 10px;
+
+  .actions{
+    display: flex;
+    gap: 10px;
+  }
+
+  .head .actions button{
+    padding: 2.5px 5px;
     background-color: #333;
     color: #fff;
     border: none;
@@ -270,20 +289,66 @@ export default defineComponent({
     cursor: pointer;
   }
 
-  .actions{
-    display: flex;
-    gap: 10px;
+  .completed{
+    background: #85b8ff;
   }
 
-  .completed {
-    background-color: #85b8ff;
-  }
-
-  .details {
+  .details{
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
     font-style: italic;
+  }
+
+  .active{
+    color: red;
+  }
+
+  @media (width > 768px) {
+    .header {
+      align-items: center;
+      width: 760px;
+    }
+
+    .hNav {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 84%;
+    }
+
+    .nav{
+      font-size: 1rem;
+    }
+    /* .nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+      align-items: center;
+    } */
+
+    .tasks {
+      padding: 20px;
+    }
+
+    .task {
+      padding: 20px;
+    }
+
+    /* .head{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    } */
+
+    .head .actions button {
+      padding: 5px 10px;
+    }
+
+    /* .actions{
+      display: flex;
+      gap: 10px;
+    } */
   }
 </style>
