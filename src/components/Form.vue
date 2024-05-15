@@ -63,9 +63,9 @@ export default defineComponent({
   },
   data(){
     return{
-      title:'',
-      description:'',
-      dueDate:'',
+      title: this.task.title,
+      description:this.task.description,
+      dueDate:this.task.dueDate,
       emptyTitle: false,
       emptyDescription: false,
       emptyDueDate: false
