@@ -27,13 +27,19 @@
     </h2>
     <ul v-if="showAllTasks">
       <li v-for="task in tasks" :key="task.id" class="task" :class="{ 'completed' : task.status === 'completed'}">
-        <!-- <div v-if="showEditTask">
-          <Form heading='Edit Task' @close="toggleShowEditTask" @add-task="addNewTask"/>
-        </div> -->
+        <div v-if="showEditTask">
+          <Form
+            heading='Edit Task'
+            @close="toggleShowEditTask"
+            @edit-task="editTask"
+            mode="edit"
+            :task="task"
+          />
+        </div>
         <div class="head">
           <h3>{{ task.title }}</h3>
           <div class="actions">
-            <!-- <button @click="console.log('hello')" v-if="task.status === 'pending'">Edit</button> -->
+            <button @click="toggleShowEditTask" v-if="task.status === 'pending'">Edit</button>
             <button @click="deleteTask(task)">Delete</button>
             <input
               type="checkbox"
@@ -232,7 +238,7 @@ export default defineComponent({
     display: flex;
     list-style: none;
     gap: 20px;
-    font-weight: 400;
+    /* font-weight: 400; */
     align-items: center;
   }
 
