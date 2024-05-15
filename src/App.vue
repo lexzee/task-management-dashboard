@@ -177,9 +177,9 @@ export default defineComponent({
       this.tasks = this.tasks.filter((t) => t.id !== task.id);
     },
 
-    editTask({id, ...updatedTask}: Task, data?: Task) {
+    editTask(t: Task, data?: Task) {
       this.tasks = this.tasks.map((task) => {
-        if (task.id === id) {
+        if (task.id === t.id) {
           return {
             ...task,
             ...data
